@@ -49,4 +49,10 @@ describe('stringCalculator.add', () =>{
 
         expect(result).toEqual(3);  
     })
+
+    it('should throw error when negative input value entered', () => {
+        let strCalc = new StringCalculator();
+
+        expect(() => {strCalc.add("1,-2")}).toThrowError(new Error('negatives not allowed: -2'));
+    })
 })

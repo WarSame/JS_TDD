@@ -20,6 +20,10 @@ export class StringCalculator {
 
         return sums.reduce(
             function(accumulator, val){
+                let numberVal = parseInt(val);
+                if (numberVal < 0){
+                    throw Error("negatives not allowed: " + numberVal);
+                }
                 let workSum = accumulator + parseInt(val);
                 return workSum;
             }, 

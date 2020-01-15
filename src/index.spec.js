@@ -55,4 +55,10 @@ describe('stringCalculator.add', () =>{
 
         expect(() => {strCalc.add("1,-2")}).toThrowError(new Error('negatives not allowed: -2'));
     })
+
+    it('should throw error with all negative values when negative input value entered', ()=> {
+        let strCalc = new StringCalculator();
+
+        expect(() => {strCalc.add("1,-2\n-4")}).toThrowError(new Error('negatives not allowed: -2,-4'));
+    })
 })

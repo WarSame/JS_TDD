@@ -18,17 +18,27 @@ export class StringCalculator {
             sums.push(...element.split(delimiter));
         });
 
-        return sums.reduce(
+        let sumsInt = sums.map(
+            sum => parseInt(sum)
+        )
+
+        this.throwOnNegativeSums(sumsInt);
+
+        return sumsInt.reduce(
             function(accumulator, val){
-                let numberVal = parseInt(val);
-                if (numberVal < 0){
-                    throw Error("negatives not allowed: " + numberVal);
-                }
-                let workSum = accumulator + parseInt(val);
-                return workSum;
-            }, 
-            0
+                return accumulator + val;
+            }
         );
+    }
+
+    throwOnNegativeSums(sums){
+        let negativeSums = sums.filter(sum => {
+            return sum < 0
+        })
+        
+        if (negativeSums.length !== 0){
+            throw Error("negatives not allowed: " + negativeSums.join());
+        }
     }
 
     getDelimiter(str){

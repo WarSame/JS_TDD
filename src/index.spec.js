@@ -45,7 +45,7 @@ describe('stringCalculator.add', () =>{
 
     it('should be be able to split input by delimiter denoted by //', () => {
         let strCalc = new StringCalculator();
-        let result = strCalc.add("//;\n1;2");
+        let result = strCalc.add("//[;]\n1;2");
 
         expect(result).toEqual(3);  
     })
@@ -60,5 +60,19 @@ describe('stringCalculator.add', () =>{
         let strCalc = new StringCalculator();
 
         expect(() => {strCalc.add("1,-2\n-4")}).toThrowError(new Error('negatives not allowed: -2,-4'));
+    })
+
+    it('should ignore values over 1000', () =>{
+        let strCalc = new StringCalculator();
+        let result = strCalc.add("//[;]\n1;2;3000;3");
+
+        expect(result).toEqual(6);  
+    })
+
+    it('should handle delimiter of any length', () => {
+        let strCalc = new StringCalculator();
+        let result = strCalc.add("//[***]\n1***2***3000***3");
+
+        expect(result).toEqual(6);  
     })
 })

@@ -22,8 +22,7 @@ export class StringCalculator {
             sum => parseInt(sum)
         )
 
-        this.throwOnNegativeSums(sumsInt);
-
+        sumsInt = this.filterIneligibleVals(sumsInt);
         return sumsInt.reduce(
             function(accumulator, val){
                 return accumulator + val;
@@ -31,23 +30,37 @@ export class StringCalculator {
         );
     }
 
-    throwOnNegativeSums(sums){
-        let negativeSums = sums.filter(sum => {
-            return sum < 0
+    filterIneligibleVals(vals){
+        let outputVals = this.throwOnNegativeSums(vals);
+        return this.ignoreOverOneThousand(outputVals);
+    }
+
+    ignoreOverOneThousand(vals){
+        return vals.filter(val => {
+            return val <= 1000
+        })
+    }
+
+    throwOnNegativeSums(vals){
+        let negativeVals = vals.filter(val => {
+            return val < 0
         })
         
-        if (negativeSums.length !== 0){
-            throw Error("negatives not allowed: " + negativeSums.join());
+        if (negativeVals.length !== 0){
+            throw Error("negatives not allowed: " + negativeVals.join());
         }
+        return vals;
     }
 
     getDelimiter(str){
         let delimiter = ",";
+        let lines = str.split("\n");
         let workStr = str;
-        if (str.startsWith("//")){
-            delimiter = str.substring(2, 3);
-            workStr = str.substring(str.indexOf("\n") + 1)
+        if (lines[0].startsWith("//")){
+            delimiter = str.substring(str.indexOf("[") + 1, str.indexOf("]"));
+            workStr = lines[1, lines.length-1];
         } 
         return {delimiter, workStr};
     }
+
 }

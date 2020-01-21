@@ -12,22 +12,41 @@ export class StringCalculator {
     }
 
     parseValue(str){
-        const {delimiter, workStr} = this.getDelimiter(str);
-        let sums = [];
-        workStr.split("\n").forEach(element => {
-            sums.push(...element.split(delimiter));
-        });
+        const {delimiters, workStr} = this.getDelimiter(str)
 
-        let sumsInt = sums.map(
-            sum => parseInt(sum)
+        let vals = this.splitStringIntoArrayByDelims(workStr, delimiters);
+
+
+        let valsInt = vals.map(
+            val => parseInt(val)
         )
 
-        sumsInt = this.filterIneligibleVals(sumsInt);
-        return sumsInt.reduce(
+        valsInt = this.filterIneligibleVals(valsInt);
+        return valsInt.reduce(
             function(accumulator, val){
                 return accumulator + val;
-            }
+            }, 0
         );
+    }
+
+    splitStringIntoArrayByDelims(workStr, delimiters){
+        let vals = [workStr];
+        delimiters.forEach(delimiter => {
+            vals = this.splitStringsByDelimiter(vals, delimiter);
+        });
+        
+        return vals;
+    }
+
+    splitStringsByDelimiter(strings, delimiter){
+        let workArr = [];
+        
+
+        strings.forEach(string => {
+            workArr.push(...string.split(delimiter));
+        });
+
+        return workArr;
     }
 
     filterIneligibleVals(vals){
@@ -53,14 +72,20 @@ export class StringCalculator {
     }
 
     getDelimiter(str){
-        let delimiter = ",";
+        let delimiters = [","];
         let lines = str.split("\n");
         let workStr = str;
         if (lines[0].startsWith("//")){
-            delimiter = str.substring(str.indexOf("[") + 1, str.indexOf("]"));
+            delimiters = this.getDelimitersFromFirstLine(lines[0]);
             workStr = lines[1, lines.length-1];
         } 
-        return {delimiter, workStr};
+        delimiters.push("\n");
+        return {delimiters, workStr};
+    }
+
+    getDelimitersFromFirstLine(line){
+        let workStr = line.substring(3);
+        return workStr.split("[").map(val => {return val.replace("\]", "")});
     }
 
 }

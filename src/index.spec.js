@@ -75,4 +75,11 @@ describe('stringCalculator.add', () =>{
 
         expect(result).toEqual(6);  
     })
+
+    it('should handle multiple delimiters', () => {
+        let strCalc = new StringCalculator();
+        let result = strCalc.add("//[***][,][;]\n1***2,4000***3,7");
+
+        expect(result).toEqual(13);  
+    })
 })

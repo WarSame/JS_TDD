@@ -7,8 +7,10 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceFolder}\\src\\index.js"
+            "name": "Attach",
+            "port": 9229,
+            "protocol": "inspector",
+            "preLaunchTask": "test"
         }
     ]
 }
